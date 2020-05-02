@@ -28,11 +28,10 @@ new Vue({
     }
   },
   methods: {
-    createContact() {
+    async createContact() {
       const {...contact} = this.form;
-      
-      this.contacts.push({...contact, id: Date.now(), marked: false});
-      
+      const newContact = await request('/api/contacts', 'POST', contact);      
+      this.contacts.push(newContact);      
       this.form.name = this.form.value = '';
     },
     markContact(id) {
