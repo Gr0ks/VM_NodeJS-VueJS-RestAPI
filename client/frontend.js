@@ -30,26 +30,26 @@ new Vue({
   methods: {
     async createContact() {
       const {...contact} = this.form;
-      const newContact = await request('/api/contacts', 'POST', contact);      
+      const newContact = await request('http://192.168.0.14:3333/api/contacts', 'POST', contact);      
       this.contacts.push(newContact);      
       this.form.name = this.form.value = '';
     },
     async markContact(id) {
       const contact = this.contacts.find(c => c.id == id);
-      const updatedContact = await request(`/api/contacts/${id}`, 'PUT', {
+      const updatedContact = await request(`http://192.168.0.14:3333/api/contacts/${id}`, 'PUT', {
         ...contact,
         marked: true
       });
       contact.marked = updatedContact.marked;
     },
     async removeContact(id) {
-      request(`/api/contacts/${id}`, 'DELETE')
+      request(`http://192.168.0.14:3333/api/contacts/${id}`, 'DELETE')
       this.contacts = this.contacts.filter(c => c.id != id);
     }
   },
   async mounted() {
     this.loading = true;
-    this.contacts = await request('/api/contacts');
+    this.contacts = await request('http://192.168.0.14:3333/api/contacts');
     this.loading = false;
   }
 });
