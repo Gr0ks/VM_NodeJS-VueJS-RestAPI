@@ -34,11 +34,16 @@ new Vue({
       this.contacts.push(newContact);      
       this.form.name = this.form.value = '';
     },
-    markContact(id) {
-      const contact = this.contacts.find(c => c.id === id);
-      contact.marked = true;
+    async markContact(id) {
+      const contact = this.contacts.find(c => c.id == id);
+      const updatedContact = await request(`/api/contacts/${id}`, 'PUT', {
+        ...contact,
+        marked: true
+      });
+      contact.marked = updatedContact.marked;
     },
-    removeContact(id) {
+    async removeContact(id) {
+      request(`/api/contacts/${id}`, 'DELETE')
       this.contacts = this.contacts.filter(c => c.id != id);
     }
   },
